@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "br.com.evj.design_system"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 21
@@ -63,7 +63,7 @@ afterEvaluate {
             create<MavenPublication>("release") {
                 groupId = "com.github.emanoel2712"
                 artifactId = "design-system"
-                version = "0.0.3"
+                version = "0.0.4"
                 from(components["release"])
             }
         }
