@@ -61,6 +61,9 @@ afterEvaluate {
     publishing {
         publications {
             create<MavenPublication>("release") {
+                groupId = "com.github.emanoel2712"
+                artifactId = "design-system"
+                version = "0.0.3"
                 from(components["release"])
             }
         }
