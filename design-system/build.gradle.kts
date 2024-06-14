@@ -43,29 +43,62 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }
 
-//afterEvaluate {
-//    publishing {
-//        publications {
-//            create<MavenPublication>("release") {
-//                from(components["release"])
-//
-//                groupId = "com.github.emanoel2712"
-//                artifactId = "design-system"
-//                version = "0.0.1"
-//            }
-//        }
-//    }
-//}
-
 afterEvaluate {
     publishing {
         publications {
             create<MavenPublication>("release") {
                 groupId = "com.github.emanoel2712"
                 artifactId = "design-system"
-                version = "0.0.4"
+                version = "0.0.5"
                 from(components["release"])
+
+                pom.withXml {
+                    asNode().appendNode("dependencies").apply {
+                        configurations["implementation"].allDependencies.forEach { dep ->
+                            if (dep.group != null && dep.version != null && dep.name != null && dep !is ProjectDependency) {
+                                appendNode("dependency").apply {
+                                    appendNode("groupId", dep.group)
+                                    appendNode("artifactId", dep.name)
+                                    appendNode("version", dep.version)
+
+                                    // Escopo da dependência
+                                    appendNode("scope", "compile")
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
 }
+
+//afterEvaluate {
+//    publishing {
+//        publications {
+//            create<MavenPublication>("release") {
+//                groupId = "com.github.emanoel2712"
+//                artifactId = "design-system"
+//                version = "0.0.4"
+//                from(components["release"])
+//
+//                // Configurar o arquivo pom.xml
+//                pom.withXml {
+//                    asNode().appendNode("dependencies").apply {
+//                        configurations["implementation"].allDependencies.forEach { dep ->
+//                            if (dep.group != null && dep.version != null && dep.name != null && dep !is ProjectDependency) {
+//                                appendNode("dependency").apply {
+//                                    appendNode("groupId", dep.group)
+//                                    appendNode("artifactId", dep.name)
+//                                    appendNode("version", dep.version)
+//
+//                                    // Escopo da dependência
+//                                    appendNode("scope", "compile")
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
